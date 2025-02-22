@@ -16,41 +16,11 @@ spec:
     enablePodMonitor: true
 
   bootstrap:
-    recovery:
-      source: clusterBackup
+    initdb:
       database: n8n
       owner: n8n
       secret:
         name: n8n-db-creds
-
-  backup:
-    barmanObjectStore:
-      azureCredentials:
-        storageAccount:
-          key: n8n-storage-account-name
-          name: azure-creds
-        storageSasToken:
-          key: n8n-blob-sas
-          name: azure-creds
-      data:
-        compression: gzip
-      destinationPath: https://hldatabaseproduction.blob.core.windows.net/n8n
-      wal:
-        compression: gzip
-    retentionPolicy: 14d
-
-  externalClusters:
-    - name: clusterBackup
-      barmanObjectStore:
-        destinationPath: https://hldatabaseproduction.blob.core.windows.net/n8n
-        serverName: n8n-db-production-v0
-        azureCredentials:
-          storageAccount:
-            name: azure-creds
-            key: n8n-storage-account-name
-          storageSasToken:
-            name: azure-creds
-            key: n8n-blob-sas
 
   resources:
     requests:
@@ -60,17 +30,10 @@ spec:
 
   managed:
     services:
-      disabledDefaultServices:
-        - ro
-        - r
       additional:
         - selectorType: rw
           serviceTemplate:
             metadata:
               name: n8n-db-lb
-              labels:
-                cilium-lb-pool: postgres-pool
-              annotations:
-                external-dns.alpha.kubernetes.io/hostname: n8n-db.mischavandenburg.net
             spec:
               type: LoadBalancer
