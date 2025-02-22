@@ -20,12 +20,7 @@ spec:
       database: n8n
       owner: n8n
       secret:
-        name: n8n-db-creds
-        # Add decryption configuration here if CNPG supports it natively
-        decryption:
-          provider: sops
-          secretRef:
-            name: sops-age
+        name: n8n-db-creds  # CNPG will use this Secret as-is
 
   resources:
     requests:
