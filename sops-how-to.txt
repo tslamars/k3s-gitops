@@ -1,0 +1,27 @@
+# SOPS AGE HOWTO
+
+age-keygen -o age.agekey
+
+cat age.agekey |
+kubectl create secret generic sops-age \
+--namespace=flux-system \
+--from-file=age.agekey=/dev/stdin
+
+mkdir ~/.sops
+age-keygen -o ~/.sops/keys.txt
+
+nano ~/.bashrc
+export SOPS_AGE_KEY_FILE=$HOME/.sops/keys.txt
+source ~/.bashrc
+
+sops -e -i databases/home/n8n/secrets.yaml
+
+or
+
+sops --encrypt --age $(cat $SOPS_AGE_KEY_FILE |grep -oP "public key: \K(.*)") --encrypted-regex '^(data|stringData)$' --in-place ./secret.yaml
+
+sops --encrypt --age $(cat $SOPS_AGE_KEY_FILE |grep -oP "public key: \K(.*)") --encrypted-regex '^(data|stringData)$' --in-place ./secret.yaml
+
+
+
+kubectl -n flux-system create secret generic sops-age --from-file=keys.agekey=/home/ansible/.sops/keys.txt
