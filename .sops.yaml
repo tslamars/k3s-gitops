@@ -1,3 +1,32 @@
+---
 creation_rules:
-  - path_regex: secrets\.yaml
-    age: age13ekfyr0maz899nwum2j0jjjsxdamptqc706dd6gjpdpmen7rg4ms8u9n7x
+  - path_regex: clusters/.*\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - "age13ekfyr0maz899nwum2j0jjjsxdamptqc706dd6gjpdpmen7rg4ms8u9n7x"
+  - path_regex: databases/.*\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - "age13ekfyr0maz899nwum2j0jjjsxdamptqc706dd6gjpdpmen7rg4ms8u9n7x"
+  - path_regex: infrastructure/.*\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - "age13ekfyr0maz899nwum2j0jjjsxdamptqc706dd6gjpdpmen7rg4ms8u9n7x"
+  - path_regex: monitoring/.*\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - "age13ekfyr0maz899nwum2j0jjjsxdamptqc706dd6gjpdpmen7rg4ms8u9n7x"
+  - path_regex: utils/.*\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - "age13ekfyr0maz899nwum2j0jjjsxdamptqc706dd6gjpdpmen7rg4ms8u9n7x"
+  # For stdin operations (e.g., piping)
+  - path_regex: /dev/stdin
+    key_groups:
+      - age:
+          - "age13ekfyr0maz899nwum2j0jjjsxdamptqc706dd6gjpdpmen7rg4ms8u9n7x"
